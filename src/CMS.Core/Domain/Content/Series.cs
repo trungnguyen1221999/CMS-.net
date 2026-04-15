@@ -1,40 +1,44 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace CMS.Core.Domain.Content
+﻿namespace CMS.Core.Domain.Content
 {
-    [Table("Series")]
-    [Index(nameof(Slug), IsUnique = true)]
+    /// <summary>
+    /// Represents a series of related posts grouped together.
+    /// Used for tutorials, courses, or multi-part articles.
+    /// </summary>
     public class Series
     {
-        [Key]
+        // Primary Key
         public Guid Id { get; set; }
 
-        [Required]
-        [MaxLength(250)]
+        // The display title of the series
         public required string Name { get; set; }
 
-        [MaxLength(500)]
+        // A short summary or intro to the series
         public string? Description { get; set; }
 
-        [Required]
-        [Column(TypeName = "varchar(250)")]
+        // URL-friendly identifier (Unique)
         public required string Slug { get; set; }
 
+        // Toggle to show/hide the series on the frontend
         public bool IsActive { get; set; }
 
+        // Manual display order for lists or navigation
         public int SortOrder { get; set; }
 
-        [MaxLength(160)]
+        // Metadata optimized for search engine results
         public string? SeoDescription { get; set; }
 
-        [MaxLength(500)]
+        // URL or path to the cover image of the series
         public string? Thumbnail { get; set; }
 
+        // Detailed introduction or body text for the series page
         public string? Content { get; set; }
 
-        [Required]
+        // The ID of the user who owns or manages this series
         public Guid OwnerUserId { get; set; }
+
+        // --- Navigation Properties ---
+
+        // Collection of links to posts included in this series
+        public virtual ICollection<PostInSeries> PostInSeries { get; set; } = new List<PostInSeries>();
     }
 }

@@ -1,17 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace CMS.Core.Domain.Content
+﻿namespace CMS.Core.Domain.Content
 {
-    [Table("Tags")]
+    /// <summary>
+    /// Represents a keyword or label used to categorize and filter posts.
+    /// Provides a flexible way to organize content across different categories.
+    /// </summary>
     public class Tag
     {
-        [Key]
-        public Guid Id { get; set; } = default!;
+        // Primary Key for the tag
+        public Guid Id { get; set; }
 
-        [Required]
-        [MaxLength(100)]
+        // The display name of the tag (e.g., "React", "DotNet", "Tutorial")
         public required string Name { get; set; }
+
+        // --- Navigation Properties ---
+
+        // Collection of link entries connecting this tag to various posts
+        public virtual ICollection<PostTag> PostTags { get; set; } = new List<PostTag>();
     }
 }
