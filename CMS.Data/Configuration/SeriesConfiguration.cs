@@ -52,6 +52,11 @@ namespace CMS.Data.Configurations
                 .WithOne(x => x.Series)
                 .HasForeignKey(x => x.SeriesId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(x => x.Owner)
+                .WithMany()
+                .HasForeignKey(x => x.OwnerUserId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

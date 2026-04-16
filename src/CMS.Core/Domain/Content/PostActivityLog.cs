@@ -1,4 +1,6 @@
-﻿namespace CMS.Core.Domain.Content
+﻿using CMS.Core.Domain.Identity;
+
+namespace CMS.Core.Domain.Content
 {
     /// <summary>
     /// Represents a log entry for tracking post status transitions.
@@ -31,5 +33,6 @@
 
         // Linking back to the Post for easier querying from the log
         public virtual Post Post { get; set; } = null!;
+        public virtual AppUser User { get; set; } = null!;
     }
 }

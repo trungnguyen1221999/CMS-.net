@@ -1,4 +1,6 @@
-﻿namespace CMS.Core.Domain.Content
+﻿using CMS.Core.Domain.Identity;
+
+namespace CMS.Core.Domain.Content
 {
     /// <summary>
     /// Represents a series of related posts grouped together.
@@ -40,5 +42,7 @@
 
         // Collection of links to posts included in this series
         public virtual ICollection<PostInSeries> PostInSeries { get; set; } = new List<PostInSeries>();
+
+        public virtual AppUser Owner { get; set; } = null!;
     }
 }

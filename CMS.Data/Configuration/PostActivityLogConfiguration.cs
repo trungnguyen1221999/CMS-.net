@@ -43,6 +43,11 @@ namespace CMS.Data.Configurations
                 .WithMany() // Or .WithMany(p => p.ActivityLogs) if you add a collection in Post entity
                 .HasForeignKey(x => x.PostId)
                 .OnDelete(DeleteBehavior.Cascade); // If a post is deleted, its logs are also removed
+
+            builder.HasOne(x => x.User)
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
