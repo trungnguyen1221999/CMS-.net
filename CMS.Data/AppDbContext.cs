@@ -56,18 +56,12 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
         foreach (EntityEntry entityEntry in entries)
         {
             PropertyInfo? modifiedProp = entityEntry.Entity.GetType().GetProperty("DateUpdated");
-            if (modifiedProp != null)
-            {
-                modifiedProp.SetValue(entityEntry.Entity, DateTime.Now);
-            }
+            modifiedProp?.SetValue(entityEntry.Entity, DateTime.Now);
 
             if (entityEntry.State == EntityState.Added)
             {
                 PropertyInfo? createdProp = entityEntry.Entity.GetType().GetProperty("DateCreated");
-                if (createdProp != null)
-                {
-                    createdProp.SetValue(entityEntry.Entity, DateTime.Now);
-                }
+                createdProp?.SetValue(entityEntry.Entity, DateTime.Now);
             }
         }
         return base.SaveChangesAsync(cancellationToken);

@@ -24,6 +24,10 @@ namespace CMS.Data.Configurations
 
             // 4. Indexing: Creating an index on Name to speed up tag-based searches
             builder.HasIndex(x => x.Name);
+
+            builder.HasMany(x => x.PostTags)
+                   .WithOne(pt => pt.Tag)
+                   .HasForeignKey(pt => pt.TagId);
         }
     }
 }

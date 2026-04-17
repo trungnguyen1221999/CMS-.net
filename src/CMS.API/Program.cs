@@ -1,15 +1,25 @@
 using CMS.API.Extensions;
 using CMS.Data;
 using Microsoft.EntityFrameworkCore;
-
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 // Add services to the container.
+Console.WriteLine("-----------------------------------------------");
+Console.WriteLine("-----------------------------------------------");
+
+Console.WriteLine($"DEBUG: Connection String is: {connectionString}");
+Console.WriteLine("-----------------------------------------------");
+
+Console.WriteLine("-----------------------------------------------");
 
 
 //Connect DB
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+// 1. Thêm dòng này để fix lỗi múi giờ của Postgres (rất quan trọng)
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
+// 2. Đổi UseSqlServer thành UseNpgsql
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(connectionString));
 
 //Config ASP.NET Core Identity
 builder.Services.AddIdentityService();
@@ -31,5 +41,23 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
+// Chèn vào cuối file Program.cs, trước app.Run();
+using (IServiceScope scope = app.Services.CreateScope())
+{
+    IServiceProvider services = scope.ServiceProvider;
+    AppDbContext context = services.GetRequiredService<AppDbContext>();
 
-app.Run();
+    try
+    {
+        // Thay CanConnect bằng cái này - nó sẽ throw nếu lỗi
+        await context.Database.OpenConnectionAsync();
+        Console.WriteLine("✅ Connect supabase successfully");
+        await context.Database.CloseConnectionAsync();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("❌ FULL ERROR:");
+        Console.WriteLine(ex.ToString());
+    }
+}
+await app.RunAsync();

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CMS.Data.Configurations;
+namespace CMS.Data.Configuration;
 
 public class PostConfiguration : IEntityTypeConfiguration<Post>
 {
@@ -37,8 +37,8 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
             .HasMaxLength(50)
             .HasConversion(
                 v => v.ToString(),
-                v => (PostStatus)Enum.Parse(typeof(PostStatus), v))
-            .HasDefaultValue(PostStatus.Draft);
+                v => Enum.Parse<PostStatus>(v)) // Use generic overload
+            .HasDefaultValue(PostStatus.Draft).IsRequired();
 
         // --- CẤU HÌNH QUAN HỆ ---
 
@@ -59,6 +59,6 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
             .WithMany()
             .HasForeignKey(x => x.ApproverUserId)
             .OnDelete(DeleteBehavior.NoAction);
-        // Dùng NoAction để tránh lỗi "Multiple Cascade Paths" trong SQL Server
+        
     }
 }

@@ -21,15 +21,15 @@ namespace CMS.Data.Configurations
 
             // 3. Configure Relationships
 
-            // Link to Post: If a Post is deleted, remove its tag associations
+            // Link to Post: Phải trỏ rõ vào p.PostTags
             builder.HasOne(x => x.Post)
-                .WithMany() // Or .WithMany(p => p.PostTags) if defined in Post
+                .WithMany(p => p.PostTags)
                 .HasForeignKey(x => x.PostId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Link to Tag: If a Tag is deleted, remove it from all associated posts
+            // Link to Tag: Phải trỏ rõ vào t.PostTags
             builder.HasOne(x => x.Tag)
-                .WithMany() // Or .WithMany(t => t.PostTags) if defined in Tag
+                .WithMany(t => t.PostTags)
                 .HasForeignKey(x => x.TagId)
                 .OnDelete(DeleteBehavior.Cascade);
         }

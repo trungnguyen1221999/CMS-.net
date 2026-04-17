@@ -1,5 +1,4 @@
 ﻿using CMS.Core.Domain.Identity;
-using System.ComponentModel.DataAnnotations;
 
 namespace CMS.Core.Domain.Content;
 
@@ -50,14 +49,15 @@ public class Post
     // Cùng trỏ về AppUser nhưng đóng vai trò khác nhau
     public virtual AppUser Author { get; set; } = null!;
     public virtual AppUser? Approver { get; set; }
+    public virtual ICollection<PostTag> PostTags { get; set; } = new List<PostTag>();
 }
 
 public enum PostStatus
 {
-    Draft = 1,
-    WaitingForApproval = 2,
-    WaitingForPublishing = 3,
-    Published = 4,
-    Rejected = 5,
-    Cancelled = 6
+    Draft = 0,
+    WaitingForApproval = 1,
+    WaitingForPublishing = 2,
+    Published = 3,
+    Rejected = 4,
+    Cancelled = 5
 }
