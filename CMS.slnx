@@ -1,5 +1,5 @@
 <Solution>
-  <Project Path="CMS.Data/CMS.Data.csproj" Id="d4c77e55-c379-4c7b-8957-f6e207639eeb" />
   <Project Path="src/CMS.API/CMS.API.csproj" Id="6286da30-a55f-4288-98e2-04307e635658" />
   <Project Path="src/CMS.Core/CMS.Core.csproj" Id="75fee652-d517-464c-b6cd-2d2197857e92" />
+  <Project Path="src/CMS.Data/CMS.Data.csproj" />
 </Solution>
