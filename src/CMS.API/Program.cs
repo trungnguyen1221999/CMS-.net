@@ -3,21 +3,11 @@ using CMS.Data;
 using Microsoft.EntityFrameworkCore;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-// Add services to the container.
-Console.WriteLine("-----------------------------------------------");
-Console.WriteLine("-----------------------------------------------");
-
-Console.WriteLine($"DEBUG: Connection String is: {connectionString}");
-Console.WriteLine("-----------------------------------------------");
-
-Console.WriteLine("-----------------------------------------------");
-
 
 //Connect DB
 // 1. Thêm dòng này để fix lỗi múi giờ của Postgres (rất quan trọng)
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-// 2. Đổi UseSqlServer thành UseNpgsql
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
@@ -34,6 +24,7 @@ WebApplication app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+
 }
 
 //app.UseHttpsRedirection();
@@ -61,3 +52,4 @@ using (IServiceScope scope = app.Services.CreateScope())
     }
 }
 await app.RunAsync();
+
